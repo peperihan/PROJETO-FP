@@ -120,3 +120,5 @@ def ver_evolucao(banco):
 
     print(f"Total de exercíciospraticados: {total_exercicios}")
     input("\nPressione ENTER para voltar")
+
+### testando commits
