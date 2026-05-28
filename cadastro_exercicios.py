@@ -105,20 +105,41 @@ def ex_cadastro(banco, plano_escolhido):
     print("\nExercício cadastrado com sucesso!")
     
 def ver_evolucao(banco):
-
     print("\n=== ACOMPANHAMENTO DE EVOLUÇÃO ===")
 
-    quantidade_planos = len(banco["Planos"])
-    print(f"Quantidade de Planos de Treino cadastrados: {quantidade_planos}")
+    print("\n--- SUA META SEMANAL ---")
+    realizados = banco.get("treinos_feitos_na_semana", 0)
+    meta = banco.get("meta_semanal", 1) 
+    total_geral = banco.get("total_historico", 0)
+
+    # Cálculo da porcentagem e barrinha de progresso
+    porcentagem = (realizados / meta) * 100
+    if porcentagem > 100: porcentagem = 100 # Trava a barra em 100%
+
+    blocos = int(porcentagem // 10)
+    barra = "█" * blocos + "-" * (10 - blocos)
+
+    print(f"Treinos: {realizados}/{meta}")
+    print(f"Progresso: [{barra}] {porcentagem:.0f}%")
+    
+    if realizados >= meta:
+        print("Status: Meta batida. Parabéns!")
+    else:
+        print(f"Status: Faltam {meta - realizados} treinos para esta meta.")
+
+    print(f"Histórico: {total_geral} treinos realizados desde o início.")
+
+    print("\n--- SEUS PLANOS DE TREINO ---")
+    quantidade_planos = len(banco.get("Planos", {}))
+    print(f"Quantidade de Planos cadastrados: {quantidade_planos}")
 
     total_exercicios = 0
 
-    for nome_treino, info in banco["Planos"].items():
-        qtd_ex_neste_treino = len(info["Exercícios"])
+    for nome_treino, info in banco.get("Planos", {}).items():
+        qtd_ex_neste_treino = len(info.get("Exercícios", []))
         total_exercicios += qtd_ex_neste_treino
         print(f" -> {nome_treino} possui {qtd_ex_neste_treino} exercícios.")
 
-    print(f"Total de exercíciospraticados: {total_exercicios}")
+    print(f"\nTotal de exercícios praticados: {total_exercicios}")
+    
     input("\nPressione ENTER para voltar")
-
-### testando commits
