@@ -1,0 +1,56 @@
+.funcao1{
+    font-family: 'Courier New', Courier, monospace;
+    color: blueviolet;
+}
+
+head{
+    background-color: antiquewhite;
+}
+:root {
+    --white: #ffffff;
+    --off-white: #f8f7fc;
+    --purple: #6c3fc5;
+    --purple-light: #8b5cf6;
+    --purple-dark: #4c2a9a;
+    --purple-faint: #f0ebff;
+    --cyan: #00c9c8;
+    --cyan-light: #4de8e7;
+    --cyan-dark: #009b9a;
+    --cyan-faint: #e0fafa;
+    --text: #1a1523;
+    --text-mid: #4b4460;
+    --text-light: #8b84a0;
+    --border: rgba(108,63,197,0.12);
+    --border-strong: rgba(108,63,197,0.25);
+    --shadow-sm: 0 2px 12px rgba(108,63,197,0.08);
+    --shadow-md: 0 8px 32px rgba(108,63,197,0.14);
+    --shadow-lg: 0 20px 60px rgba(108,63,197,0.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-pill: 999px;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* â”€â”€ NAV â”€â”€ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    height: 68px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
