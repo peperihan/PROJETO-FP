@@ -1,0 +1,15 @@
+1) Manuseio de dados:
+Funções para ler o .txt quando o programa começar e >carregá-lo< num dicionário;
+Funções para salvar o diretório de volta no .txt quando o programa fechar.
+
+2) Lógica:
+- def gerenciar_planos():
+
+- def ver_evolucao():
+
+- def exibir_sugestoes(): (onde importamos 'random' e escolhemos uma dica aleatória de uma lista).
+
+
+3) O Loop Principal:
+
+Um loop while True no final do código e chama as funções de (2)
