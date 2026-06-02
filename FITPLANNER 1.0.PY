@@ -5,12 +5,14 @@ os.system('cls' if os.name == 'nt' else 'clear')
 
 data_atual = datetime.now().strftime("%d/%m/%y %H:%M")
 
+def id_invalido():
+    print("ID Inválido! Favor digitar apenas o número exibido antes do nome do plano.")
+
 """ 
 > o ID vai ser o Índice da lista
 > ajustar prints e menu
 https://streamlit.io
 https://www.gradio.app """
-
 
 
 def salvar_dados(banco, nome_arquivo="dados_fitplanner.txt"):
@@ -96,9 +98,9 @@ def visualizar_plano(banco):
         print("Nenhum Plano cadastrado.")
         return
 
-    for id_planos, dados in banco["Planos"].items():
+    for id_planos, dados in enumerate(banco["Planos"].items(), start =1):
         print(
-            f"Nome do Plano de Treino: {id_planos} \n"
+            f"Plano {i} | Nome do Plano de Treino: {id_planos} \n"
             f"Data de Criação: {dados.get("Data de criação", data_atual)} \n"
             f"Duração: {dados["duracao"]}\n"
             f"Objetivo: {dados.get("objetivo", "N/I")}\n"
@@ -119,48 +121,57 @@ def visualizar_plano(banco):
     opcao = input("\nEscolha uma opção: ")
 
     if opcao == "1":
-        id_antigo = input("Digite o nome do plano que deseja atualizar: ")
-        if id_antigo in banco["Planos"]:
-            item = input("Qual item deseja alterar? (Nome, Duração, Objetivo): ").lower().strip()
-            mapeamento_chaves = {
-                                "nome": "nome", 
-                                 "duração": "duracao", 
-                                 "duracao": "duracao", 
-                                 "objetivo": "objetivo"
-                                 }
-            
-            if item in mapeamento_chaves:
-                chave_real = mapeamento_chaves[item]
-                novo_valor = input(f"Novo valor para {item}: ")
+        lista_planos = list(banco["Planos"].keys())
+        try:
+            id_numero = input("Digite o número do plano que deseja atualizar: ")
+            id_antigo = lista_planos[id_numero - 1]
+            if id_antigo in banco["Planos"]:
+                item = input("Qual item deseja alterar? (Nome, Duração, Objetivo): ").lower().strip()
+                mapeamento_chaves = {
+                                    "nome": "nome", 
+                                    "duração": "duracao", 
+                                    "duracao": "duracao", 
+                                    "objetivo": "objetivo"
+                                    }
                 
-                if item == "nome":
-                    if novo_valor in banco["Planos"]:
-                        print("Erro! Já existe um plano com esse nome.")
-                        return
+                if item in mapeamento_chaves:
+                    chave_real = mapeamento_chaves[item]
+                    novo_valor = input(f"Novo valor para {item}: ")
                     
-                    # Remove o plano com o nome antigo e guarda os dados dele
-                    dados_plano = banco["Planos"].pop(id_antigo)
-                    
-                    # ATENÇÃO: Se o dicionário interno também guardar a chave "nome", atualizamos aqui:
-                    if "nome" in dados_plano:
-                        dados_plano["nome"] = novo_valor
+                    if item == "nome":
+                        if novo_valor in banco["Planos"]:
+                            print("Erro! Já existe um plano com esse nome.")
+                            return
                         
-                    # Insere de volta no banco com o novo nome como chave principal
-                    banco["Planos"][novo_valor] = dados_plano
+                        # Remove o plano com o nome antigo e guarda os dados dele
+                        dados_plano = banco["Planos"].pop(id_numero)
+                        
+                        # ATENÇÃO: Se o dicionário interno também guardar a chave "nome", atualizamos aqui:
+                        if "nome" in dados_plano:
+                            dados_plano["nome"] = novo_valor
+                            
+                        # Insere de volta no banco com o novo nome como chave principal
+                        banco["Planos"][novo_valor] = dados_plano
+                    else:
+                        banco["Planos"][id_numero][chave_real] = novo_valor
+                    print("Plano atualizado com sucesso!")
                 else:
-                    banco["Planos"][id_antigo][chave_real] = novo_valor
-                print("Plano atualizado com sucesso!")
+                    print("Item inválido.")
             else:
-                print("Item inválido.")
-        else:
-            print("Plano não encontrado.")
+                print("Plano não encontrado.")
+        except (ValueError, IndexError):
+            id_invalido()
 
     elif opcao == "2":
-        plano_escolhido = input("Digite o nome do plano para gerenciar os exercícios: ")
-        if plano_escolhido in banco["Planos"]:
-            submenu_exercicios(banco, plano_escolhido)
-        else:
-            print("Plano não encontrado.")
+        lista_planos = list(banco["Planos"].keys())
+        try:
+            plano_escolhido = input("Digite o nome do plano para gerenciar os exercícios: ")
+            if plano_escolhido in banco["Planos"]:
+                submenu_exercicios(banco, plano_escolhido)
+            else:
+                print("Plano não encontrado.")
+        except (ValueError, IndexError):
+            id_invalido()
 
     elif opcao == "3":
         print("Voltando ao menu principal....")
@@ -170,12 +181,23 @@ def visualizar_plano(banco):
         print("Opção inválida, tente novamente.")
 
 def deletar_plano(banco):
-    id_plano = input("Digite o nome do plano que deseja excluir: ")
-    if id_plano in banco["Planos"]:
+    print("\n === Excluir um Plano de Treino === ")
+    if not banco["Planos"]:
+        print("Não há planos para excluir.")
+        return
+    
+    lista_planos = list(banco["Planos"].keys())
+    for i, nome in enumerate(lista_planos, start=1):
+        print(f"[{i}] {nome}")
+    
+    try:
+        id_numero = int(input("\n Digite o número do plano que deseja excluir:\n> "))
+        id_plano = lista_planos[id_numero - 1]
+        
         banco["Planos"].pop(id_plano)
-        print(f"Plano: {id_plano} removido.")
-    else:
-        print("O item solicitado não está no seu plano, tente novamente!")
+        print(f"Plano: '{id_plano}' removido com sucesso.")
+    except (ValueError, IndexError):
+        id_invalido()
 
 def escolhas():
     meu_banco = carregar_dados()
