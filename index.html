@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fit Planner – Sua Academia Inteligente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo-nav">Fit<span>Planner</span></a>
+  <ul class="links-nav">
+    <li><a href="#recursos">Recursos</a></li>
+    <li><a href="#planos">Planos</a></li>
+    <li><a href="#agente">Calculadora</a></li>
+    <li><a href="#depoimentos">Depoimentos</a></li>
+  </ul>
+  <a href="#planos" class="cta-nav">Começar agora</a>
+  <button class="hamburguer" onclick="alternarMenu()" aria-label="Menu">
+    <span id="hb1"></span><span id="hb2"></span><span id="hb3"></span>
+  </button>
+</nav>
+
+<div class="menu-mobile" id="menuMobile">
+  <a href="#recursos" onclick="alternarMenu()">Recursos</a>
+  <a href="#planos" onclick="alternarMenu()">Planos</a>
+  <a href="#agente" onclick="alternarMenu()">Calculadora</a>
+  <a href="#depoimentos" onclick="alternarMenu()">Depoimentos</a>
+  <a href="#planos" onclick="alternarMenu()" style="color:var(--roxo)">Começar agora →</a>
+</div>
+
+<section class="destaque">
+  <div class="destaque-fundo"></div>
+  <div class="destaque-grade"></div>
+  <div class="destaque-interno">
+    <div>
+      <div class="destaque-etiqueta">Academia Inteligente &amp; Personalizada</div>
+      <h1>Treine com <em>propósito</em>,<br>evolua com <span class="hl">dados</span>.</h1>
+      <p class="destaque-descricao">
+        O Fit Planner combina planos de treino personalizados, controle de metas e uma IA que calcula exatamente quando você vai atingir seu objetivo.
+      </p>
+      <div class="destaque-acoes">
+        <a href="#planos" class="botao-primario">Começar agora →</a>
+        <a href="#agente" class="botao-contorno">Testar calculadora</a>
+      </div>
+      <div class="destaque-estatisticas">
+        <div>
+          <div class="destaque-estatistica-numero">2.400+</div>
+          <div class="destaque-estatistica-rotulo">Alunos ativos</div>
+        </div>
+        <div>
+          <div class="destaque-estatistica-numero">98%</div>
+          <div class="destaque-estatistica-rotulo">Taxa de satisfação</div>
+        </div>
+        <div>
+          <div class="destaque-estatistica-numero">7×</div>
+          <div class="destaque-estatistica-rotulo">Mais resultados</div>
+        </div>
+      </div>
+    </div>
+    <div class="destaque-visual">
+      <div class="pilha-cartoes">
+        <div class="cartao cartao-p">
+          <div class="cartao-rotulo">Meta semanal</div>
+          <div class="cartao-valor-p">−600 kcal/dia</div>
+          <div class="cartao-subtitulo">4 treinos esta semana ✓</div>
+        </div>
+        <div class="cartao cartao-principal">
+          <div class="cartao-rotulo">Evolução do mês</div>
+          <div class="cartao-valor">−3,2 kg</div>
+          <div class="cartao-subtitulo">Você está 68% da meta 🎯</div>
+          <div class="cartao-barra-envoltura">
+            <div class="cartao-barra-rotulo"><span>Progresso</span><span>68%</span></div>
+            <div class="cartao-barra-fundo"><div class="cartao-barra-preenchimento" style="width:68%"></div></div>
+          </div>
+          <div class="cartao-barra-envoltura" style="margin-top:10px">
+            <div class="cartao-barra-rotulo"><span>Frequência</span><span>85%</span></div>
