@@ -141,3 +141,87 @@ nav {
   cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
   transition: all .2s;
 }
+/* ── RECURSOS ── */
+#recursos { background: var(--off-white); }
+.grade-recursos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px; margin-top: 56px;
+}
+.cartao-recurso {
+  background: var(--white);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 28px 26px;
+  transition: transform .2s, box-shadow .2s;
+}
+.cartao-recurso:hover { transform: translateY(-4px); box-shadow: var(--sombra-md); }
+.icone-recurso {
+  width: 48px; height: 48px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 18px;
+}
+.ic-roxo { background: var(--roxo-fraco); }
+.ic-ciano { background: var(--ciano-fraco); }
+.cartao-recurso h3 {
+  font-family: var(--fonte-display); font-size: 17px; font-weight: 700;
+  margin-bottom: 8px;
+}
+.cartao-recurso p { font-size: 14px; color: var(--texto-medio); line-height: 1.65; }
+
+/* ── PLANOS ── */
+#planos { background: var(--white); }
+.grade-planos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px; margin-top: 56px;
+}
+.cartao-plano {
+  border: 1.5px solid var(--borda-forte);
+  border-radius: var(--raio);
+  padding: 32px 28px;
+  position: relative; overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+}
+.cartao-plano:hover { transform: translateY(-4px); box-shadow: var(--sombra-md); }
+.cartao-plano.destaque {
+  background: var(--roxo);
+  border-color: var(--roxo);
+  color: #fff;
+}
+.emblema-plano {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--ciano); color: var(--texto);
+  border-radius: var(--raio-pilula);
+  font-size: 11px; font-weight: 700; padding: 4px 12px;
+  letter-spacing: .05em; text-transform: uppercase;
+}
+.nome-plano {
+  font-family: var(--fonte-display); font-size: 20px; font-weight: 700; margin-bottom: 6px;
+}
+.desc-plano { font-size: 14px; opacity: .7; margin-bottom: 24px; }
+.preco-plano {
+  font-family: var(--fonte-display); font-size: 42px; font-weight: 800;
+  letter-spacing: -1px; margin-bottom: 4px;
+}
+.preco-plano span { font-size: 16px; font-weight: 400; opacity: .6; vertical-align: super; }
+.periodo-plano { font-size: 13px; opacity: .6; margin-bottom: 28px; }
+.itens-plano { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 10px; }
+.itens-plano li { font-size: 14px; display: flex; align-items: center; gap: 10px; }
+.itens-plano li::before {
+  content: '✓'; width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.cartao-plano:not(.destaque) .itens-plano li::before {
+  background: var(--roxo-fraco); color: var(--roxo);
+}
+.btn-plano {
+  width: 100%; padding: 13px; border-radius: var(--raio-pilula);
+  font-family: var(--fonte-corpo); font-size: 15px; font-weight: 500;
+  cursor: pointer; border: none; transition: all .2s;
+}
+.btn-plano-padrao { background: var(--roxo-fraco); color: var(--roxo); }
+.btn-plano-padrao:hover { background: var(--roxo); color: #fff; }
+.btn-plano-destaque { background: var(--ciano); color: var(--texto); }
+.btn-plano-destaque:hover { background: var(--ciano-escuro); color: #fff; }
