@@ -185,3 +185,88 @@
     </div>
   </div>
 </section>
+<section id="agente">
+  <div class="container">
+    <div class="etiqueta-secao">Calculadora Inteligente</div>
+    <h2 class="titulo-secao">Descubra quando você<br>vai atingir sua meta</h2>
+    <p class="descricao-secao">Nosso agente calcula, com base no seu exercício escolhido, em quantas semanas você vai bater seu objetivo.</p>
+    <div class="envoltura-agente">
+      <div class="agente-esquerda">
+        <div>
+          <div class="robo-agente">🤖</div>
+          <h2>Olá! Sou o FitBot.</h2>
+          <p>Me diga qual exercício cardio você prefere e quantas calorias quer eliminar. Eu calculo exatamente em quantas semanas você chega lá.</p>
+          <div class="dica-agente">
+            💡 <strong>Dica:</strong> Combinar diferentes tipos de cardio durante a semana acelera o metabolismo e evita a adaptação do corpo.
+          </div>
+        </div>
+        <div style="margin-top:32px;font-size:13px;opacity:.7">
+          * Cálculos baseados em gasto calórico médio por atividade. Resultados podem variar conforme peso e intensidade.
+        </div>
+      </div>
+      <div class="agente-direita">
+        <h3>Calcular minha meta de cardio</h3>
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Exercício cardio</label>
+          <select class="controle-campo" id="exercicio">
+            <option value="">Selecione o exercício...</option>
+            <option value="corrida">🏃 Esteira – correndo (600 kcal/h)</option>
+            <option value="caminhada">🚶 Esteira – caminhando (300 kcal/h)</option>
+            <option value="inclinada">⛰️ Esteira inclinada (450 kcal/h)</option>
+            <option value="bicicleta">🚴 Bicicleta ergométrica (400 kcal/h)</option>
+            <option value="escada">🪜 Escada (550 kcal/h)</option>
+          </select>
+        </div>
+        <div class="linha-campos">
+          <div class="grupo-campo">
+            <label class="rotulo-campo">Calorias a perder (kcal)</label>
+            <input type="number" class="controle-campo" id="calorias" placeholder="Ex: 5000" min="100" max="100000">
+          </div>
+          <div class="grupo-campo">
+            <label class="rotulo-campo">Minutos por sessão</label>
+            <input type="number" class="controle-campo" id="minutos" placeholder="Ex: 45" min="10" max="180">
+          </div>
+        </div>
+        <div class="grupo-campo">
+          <label class="rotulo-campo">Sessões por semana</label>
+          <select class="controle-campo" id="sessoes">
+            <option value="2">2× por semana</option>
+            <option value="3" selected>3× por semana</option>
+            <option value="4">4× por semana</option>
+            <option value="5">5× por semana</option>
+            <option value="6">6× por semana</option>
+          </select>
+        </div>
+        <button class="botao-calcular" onclick="calcular()">Calcular com FitBot 🤖</button>
+        <div class="resultado" id="resultado">
+          <h4>📊 Resultado da sua análise</h4>
+          <div class="grade-resultado">
+            <div class="cartao-resultado">
+              <div class="numero-resultado" id="res-semanas">–</div>
+              <div class="unidade-resultado">semanas</div>
+              <div class="rotulo-resultado">para atingir a meta</div>
+            </div>
+            <div class="cartao-resultado">
+              <div class="numero-resultado" id="res-kcal">–</div>
+              <div class="unidade-resultado">kcal/hora</div>
+              <div class="rotulo-resultado">gasto com esse exercício</div>
+            </div>
+            <div class="cartao-resultado">
+              <div class="numero-resultado" id="res-sessao">–</div>
+              <div class="unidade-resultado">kcal/sessão</div>
+              <div class="rotulo-resultado">queima por treino</div>
+            </div>
+            <div class="cartao-resultado">
+              <div class="numero-resultado" id="res-semana">–</div>
+              <div class="unidade-resultado">kcal/semana</div>
+              <div class="rotulo-resultado">queima semanal total</div>
+            </div>
+          </div>
+          <div class="descricao-resultado" id="res-desc">
+            <div class="carregando" id="carregando" style="display:none">⏳ Consultando o FitBot...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
