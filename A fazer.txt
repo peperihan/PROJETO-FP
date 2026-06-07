@@ -13,3 +13,5 @@ Funções para salvar o diretório de volta no .txt quando o programa fechar.
 3) O Loop Principal:
 
 Um loop while True no final do código e chama as funções de (2)
+
+4) Reformular as intrucoes no READ.ME, descrevendo o passo a passo de forma clara e objetiva
