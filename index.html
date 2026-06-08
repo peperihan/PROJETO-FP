@@ -79,9 +79,6 @@
           </div>
           <div class="cartao-barra-envoltura" style="margin-top:10px">
             <div class="cartao-barra-rotulo"><span>Frequência</span><span>85%</span></div>
-           </div>
-          <div class="cartao-barra-envoltura" style="margin-top:10px">
-            <div class="cartao-barra-rotulo"><span>Frequência</span><span>85%</span></div>
             <div class="cartao-barra-fundo"><div class="cartao-barra-preenchimento" style="width:85%"></div></div>
           </div>
         </div>
@@ -94,6 +91,7 @@
     </div>
   </div>
 </section>
+
 <section id="recursos">
   <div class="container">
     <div class="etiqueta-secao">Recursos</div>
@@ -121,18 +119,19 @@
         <p>Visualize treinos realizados, frequência semanal e progresso em relação às metas em um painel intuitivo.</p>
       </div>
       <div class="cartao-recurso">
-  <div class="icone-recurso ic-roxo">💾</div>
-  <h3>Histórico Seguro</h3>
-  <p>Todos os dados salvos em CSV ou TXT. Seu histórico completo de treinos, metas e evolução sempre acessível.</p>
-</div>
-<div class="cartao-recurso">
-  <div class="icone-recurso ic-ciano">🤖</div>
-  <h3>Sugestões com IA</h3>
-  <p>Receba sugestões personalizadas de exercícios, divisão semanal, tempo de descanso e dicas de alimentação.</p>
-</div>
-</div>
-</div>
+        <div class="icone-recurso ic-roxo">💾</div>
+        <h3>Histórico Seguro</h3>
+        <p>Todos os dados salvos em CSV ou TXT. Seu histórico completo de treinos, metas e evolução sempre acessível.</p>
+      </div>
+      <div class="cartao-recurso">
+        <div class="icone-recurso ic-ciano">🤖</div>
+        <h3>Sugestões com IA</h3>
+        <p>Receba sugestões personalizadas de exercícios, divisão semanal, tempo de descanso e dicas de alimentação.</p>
+      </div>
+    </div>
+  </div>
 </section>
+
 <section id="planos">
   <div class="container">
     <div class="etiqueta-secao">Planos</div>
@@ -144,7 +143,7 @@
         <div class="desc-plano">Para quem está começando</div>
         <div class="preco-plano"><span>R$</span> 0</div>
         <div class="periodo-plano">para sempre</div>
-        <ul class="itens-plano" style="color:var(--text-mid)">
+        <ul class="itens-plano" style="color:var(--texto-medio)">
           <li>1 plano de treino ativo</li>
           <li>Até 10 exercícios</li>
           <li>Histórico de 30 dias</li>
@@ -173,7 +172,7 @@
         <div class="desc-plano">Para academias e personal</div>
         <div class="preco-plano"><span>R$</span> 129</div>
         <div class="periodo-plano">por mês</div>
-        <ul class="itens-plano" style="color:var(--text-mid)">
+        <ul class="itens-plano" style="color:var(--texto-medio)">
           <li>Tudo do Pro</li>
           <li>Múltiplos alunos</li>
           <li>Relatórios avançados</li>
@@ -185,6 +184,7 @@
     </div>
   </div>
 </section>
+
 <section id="agente">
   <div class="container">
     <div class="etiqueta-secao">Calculadora Inteligente</div>
@@ -262,11 +262,66 @@
               <div class="rotulo-resultado">queima semanal total</div>
             </div>
           </div>
-          <div class="descricao-resultado" id="res-desc">
-            <div class="carregando" id="carregando" style="display:none">⏳ Consultando o FitBot...</div>
-          </div>
+          <div class="descricao-resultado" id="res-desc"></div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+const kcalPorHora = {
+  corrida: 600, caminhada: 300, inclinada: 450, bicicleta: 400, escada: 550
+};
+const nomesExercicio = {
+  corrida: 'Esteira correndo', caminhada: 'Esteira caminhando',
+  inclinada: 'Esteira inclinada', bicicleta: 'Bicicleta ergométrica', escada: 'Escada'
+};
+
+function calcular() {
+  const ex  = document.getElementById('exercicio').value;
+  const cal = parseFloat(document.getElementById('calorias').value);
+  const min = parseFloat(document.getElementById('minutos').value);
+  const ses = parseInt(document.getElementById('sessoes').value);
+
+  if (!ex || !cal || !min) {
+    alert('Preencha todos os campos para calcular.');
+    return;
+  }
+
+  const kcalH      = kcalPorHora[ex];
+  const kcalSessao = Math.round(kcalH * (min / 60));
+  const kcalSemana = kcalSessao * ses;
+  const semanas    = Math.ceil(cal / kcalSemana);
+  const meses      = (semanas / 4.33).toFixed(1);
+
+  document.getElementById('res-semanas').textContent = semanas;
+  document.getElementById('res-kcal').textContent    = kcalH;
+  document.getElementById('res-sessao').textContent  = kcalSessao;
+  document.getElementById('res-semana').textContent  = kcalSemana;
+
+  let emoji = semanas <= 8 ? '🚀' : semanas <= 16 ? '💪' : '🎯';
+  document.getElementById('res-desc').innerHTML =
+    `${emoji} Com <strong>${nomesExercicio[ex]}</strong>, fazendo <strong>${min} minutos</strong> por sessão e <strong>${ses}× por semana</strong>, você vai queimar <strong>${kcalSemana} kcal/semana</strong> e atingir a meta de <strong>${cal.toLocaleString('pt-BR')} kcal</strong> em aproximadamente <strong>${semanas} semanas</strong> (~${meses} meses). Continue firme!`;
+
+  const res = document.getElementById('resultado');
+  res.classList.remove('show');
+  void res.offsetWidth;
+  res.classList.add('show');
+}
+
+function alternarMenu() {
+  const m = document.getElementById('menuMobile');
+  m.classList.toggle('open');
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+
+</body>
+</html>
