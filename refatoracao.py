@@ -41,4 +41,14 @@ def ver_evolucao(banco):
     # Correção do texto: são exercícios cadastrados na base, não praticados
     print(f"\nTotal de exercícios cadastrados na base: {total_exercicios}")
     
-    input("\nPressione ENTER para voltar")
+    #adc ponte entre aqui e acompanhamento_metas
+    print("-" * 30)
+    print(" 1. Visualizar Metas Corporais e Corrida")
+    print(" 2. Voltar para o Menu Principal")  
+    opcao = input("\n> ")
+
+    if opcao == "1":
+        from acompanhamento_metas import acompanhar_metas
+        acompanhar_metas(banco)
+    else:
+        print("\nRetornando ao menu principal...")
