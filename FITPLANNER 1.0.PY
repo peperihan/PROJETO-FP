@@ -1,6 +1,8 @@
 import os
 from datetime import datetime
-from cadastro_exercicios import submenu_exercicios, ver_evolucao
+from cadastro_exercicios import submenu_exercicios
+from refatoracao import ver_evolucao
+from acompanhamento_metas import acompanhar_metas
 os.system('cls' if os.name == 'nt' else 'clear')
 
 data_atual = datetime.now().strftime("%d/%m/%y %H:%M")
@@ -24,7 +26,9 @@ def salvar_dados(banco, nome_arquivo="dados_fitplanner.txt"):
                     arquivo.write(f"EXERCICIO|{nome_treino}|{ex['Nome']}|{ex['Séries']}|{ex['Repetições']}|{ex.get('Tempo', '')}|{ex.get('Distância', '')}\n")
                 for ex_catalogo in banco["Catalogo_exercicios"]:
                     arquivo.write(f"CATALOGO|{ex_catalogo}\n")
-        
+            if isinstance(banco.get("Metas"), dict):
+                for tipo_meta, valores in banco["Metas"].items():
+                    arquivo.write(f"META|{tipo_meta}|{valores['atual']}|{valores['objetivo']}\n")
         print("\n[!!] Alterações salvas com sucesso! [!!]")
     except Exception as e:
         print(f"\n[ERRO] Não foi possível salvar os dados: {e}")
@@ -33,7 +37,11 @@ def carregar_dados(nome_arquivo="dados_fitplanner.txt"):
     banco = {
         "Planos": {},
         "Catalogo_exercicios": [],
-        "Metas": [],
+        "Metas": {
+            "Perder Peso":{"atual": 0.0, "objetivo": 0.0},
+            "Distância": {"atual": 0.0, "objetivo": 0.0},
+            "Ganho de Massa Muscular": {"atual": 0.0, "objetivo": 0.0}
+            },
         "Histórico": [],
         "Exercícios": []
     }
@@ -71,6 +79,15 @@ def carregar_dados(nome_arquivo="dados_fitplanner.txt"):
                         })
                 elif tipo_linha == "CATALOGO":
                     banco["Catalogo_exercicios"].append(partes[1])
+                elif tipo_linha == "META":
+                    tipo_meta = partes[1]
+                    atual = float(partes[2])
+                    objetivo = float(partes[3])
+                    
+                    if "Metas" not in banco or not isinstance(banco["Metas"], dict):
+                        banco["Metas"]={}
+                    
+                    banco["Metas"][tipo_meta] = {"atual": atual, "objetivo": objetivo}
         return banco
     except Exception as e:
         print(f"[ERRO] Falha ao ler o arquivo de salvamento: {e}. Criando novo arquivo...")
@@ -98,9 +115,9 @@ def visualizar_plano(banco):
         print("Nenhum Plano cadastrado.")
         return
 
-    for id_planos, dados in enumerate(banco["Planos"].items(), start =1):
+    for i, (nome_plano, dados) in enumerate(banco["Planos"].items(), start =1):
         print(
-            f"Plano {i} | Nome do Plano de Treino: {id_planos} \n"
+            f"Plano {i:02d} | Nome do Plano de Treino: {nome_plano} \n"
             f"Data de Criação: {dados.get("Data de criação", data_atual)} \n"
             f"Duração: {dados["duracao"]}\n"
             f"Objetivo: {dados.get("objetivo", "N/I")}\n"
@@ -111,7 +128,7 @@ def visualizar_plano(banco):
             print("[!!] Nenhum exercício cadastrado. [!!]")
         else:
             for i, ex in enumerate(dados["Exercícios"]):
-                print(f"{i+1}. {ex['Nome']} - {ex['Séries']}x{ex['Repetições']} (Tempo: {ex.get('Tempo','')} min | Distância: {ex.get('Distância','')} km)")
+                print(f"{i+1:02d}. {ex['Nome']} - {ex['Séries']}x{ex['Repetições']} (Tempo: {ex.get('Tempo','')} min | Distância: {ex.get('Distância','')} km)")
     print("-"*32)
     print("Opções:")
     print(" 1. Editar informações básicas do plano (Nome, Duração, Objetivo)")
@@ -123,7 +140,7 @@ def visualizar_plano(banco):
     if opcao == "1":
         lista_planos = list(banco["Planos"].keys())
         try:
-            id_numero = input("Digite o número do plano que deseja atualizar: ")
+            id_numero = int(input("Digite o número do plano que deseja atualizar: "))
             id_antigo = lista_planos[id_numero - 1]
             if id_antigo in banco["Planos"]:
                 item = input("Qual item deseja alterar? (Nome, Duração, Objetivo): ").lower().strip()
@@ -142,18 +159,13 @@ def visualizar_plano(banco):
                         if novo_valor in banco["Planos"]:
                             print("Erro! Já existe um plano com esse nome.")
                             return
-                        
-                        # Remove o plano com o nome antigo e guarda os dados dele
-                        dados_plano = banco["Planos"].pop(id_numero)
-                        
-                        # ATENÇÃO: Se o dicionário interno também guardar a chave "nome", atualizamos aqui:
+                        dados_plano = banco["Planos"].pop(id_numero)                        
                         if "nome" in dados_plano:
                             dados_plano["nome"] = novo_valor
-                            
-                        # Insere de volta no banco com o novo nome como chave principal
                         banco["Planos"][novo_valor] = dados_plano
+                        
                     else:
-                        banco["Planos"][id_numero][chave_real] = novo_valor
+                        banco["Planos"][id_antigo][chave_real] = novo_valor
                     print("Plano atualizado com sucesso!")
                 else:
                     print("Item inválido.")
@@ -188,14 +200,14 @@ def deletar_plano(banco):
     
     lista_planos = list(banco["Planos"].keys())
     for i, nome in enumerate(lista_planos, start=1):
-        print(f"[{i}] {nome}")
+        print(f"[{i:02d}] {nome}")
     
     try:
         id_numero = int(input("\n Digite o número do plano que deseja excluir:\n> "))
         id_plano = lista_planos[id_numero - 1]
         
         banco["Planos"].pop(id_plano)
-        print(f"Plano: '{id_plano}' removido com sucesso.")
+        print(f"Plano: '{id_plano:02d}' removido com sucesso.")
     except (ValueError, IndexError):
         id_invalido()
 
@@ -208,9 +220,10 @@ def escolhas():
             "Escolha uma opção:\n"
             " 1. Adicionar Plano de Treino\n"
             " 2. Visualizar/Gerenciar Planos de Treino\n"
-            " 3. Acompanhar Evolução\n"
-            " 4. Deletar Plano\n"
-            " 5. Sair\n> "
+            " 3. Acompanhamento de Treinos\n"
+            " 4. Visualizar Metas Corporais\n"
+            " 5. Deletar Plano\n"
+            " 6. Sair\n> "
         )
 
         if escolha == "1":
@@ -225,10 +238,14 @@ def escolhas():
             ver_evolucao(meu_banco)
             
         elif escolha == "4":
-            deletar_plano(meu_banco)
+            acompanhar_metas(meu_banco)
             salvar_dados(meu_banco)
             
         elif escolha == "5":
+            deletar_plano(meu_banco)
+            salvar_dados(meu_banco)
+            
+        elif escolha == "6":
             print("Agradecemos a preferência, volte sempre!")
             break
         else:
