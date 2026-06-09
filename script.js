@@ -49,3 +49,31 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
   });
 });
+
+function buscarPlanosDoPython() {
+  fetch('/api/planos')
+    .then(resposta => resposta.json())
+    .then(dados => {
+      const listaHTML = document.getElementById('lista-planos-backend');
+      if (!listaHTML) return;
+      
+      listaHTML.innerHTML = '';
+      
+      const nomesDosPlanos = Object.keys(dados);
+      
+      if (nomesDosPlanos.length === 0) {
+        listaHTML.innerHTML = `<li style="color: #ff4a4a; text-align: center;">Nenhum plano encontrado no arquivo txt.</li>`;
+        return;
+      }
+      
+      nomesDosPlanos.forEach(plano => {
+        const item = document.createElement('li');
+        item.style.cssText = "background: rgba(255,255,255,0.08); padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid #00c9c8; font-weight: bold;";
+        item.innerHTML = `🏋️‍♂️ ${plano}`;
+        listaHTML.appendChild(item);
+      });
+    })
+    .catch(erro => console.error("Erro ao conectar com o Python:", erro));
+}
+
+document.addEventListener('DOMContentLoaded', buscarPlanosDoPython);
